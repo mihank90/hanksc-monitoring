@@ -41,6 +41,40 @@ SESSION_COLUMNS = [
 
 st.set_page_config(page_title=APP_TITLE, page_icon="⚡", layout="wide", initial_sidebar_state="expanded")
 
+#zaciatok noveho kodu
+
+BASE_DIR = Path(__file__).resolve().parent
+LOGO_PATH = BASE_DIR / "assets" / "hank_sc_logo.png"
+
+st.logo(
+    str(LOGO_PATH),
+    size="large",
+    link="https://hanksc.com",
+)
+
+with st.sidebar:
+    st.link_button(
+        "Visit HANK SC",
+        "https://hanksc.com",
+        use_container_width=True,
+    )
+    
+st.markdown("---")
+
+st.markdown(
+    """
+    <div style="text-align:center; font-size:12px; opacity:0.65;">
+        HANK Strength & Conditioning<br>
+        <a href="https://hanksc.com" target="_blank">
+            Data. Decisions. Performance.
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+#koniec noveho kodu
+
 st.markdown(
     """
     <style>
