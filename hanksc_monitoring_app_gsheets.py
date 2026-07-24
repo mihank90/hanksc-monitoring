@@ -290,14 +290,13 @@ def show_home() -> None:
         - **Athletes** submit daily readiness and post-session RPE logs.
         - **Coach** sees longitudinal trends, flags and raw data.
         - **Clients** can view their own trends in a simple dashboard.
-        - Data are saved directly into **Google Sheets**.
-
+        
         ### Flag logic
         - **GREEN**: normal training signal.
         - **YELLOW**: monitor or adjust load.
         - **RED**: high pain / low readiness signal — modify training and check context.
 
-        <p class="small-note">MVP note: this is a lightweight coaching-monitoring tool, not a medical record system. Use proper consent, access control and GDPR-aware data handling for real client data.</p>
+        <p class="small-note">MVP note: this is a lightweight coaching-monitoring tool, not a medical record system.</p>
         """,
         unsafe_allow_html=True,
     )
