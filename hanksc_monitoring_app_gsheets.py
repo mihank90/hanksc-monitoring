@@ -50,8 +50,17 @@ a {color:#add0ac}
 .hank-hero p {font-size:1rem;line-height:1.6;max-width:790px;margin:0}
 .hank-principle {padding:1rem 1.2rem;border-left:3px solid #76a078;background:#18251b;font-size:1.1rem;font-weight:650;margin:1rem 0}
 [data-testid="stForm"] {border:1px solid #425b48;background:#111b14;padding:1.3rem}
-[data-testid="stMetric"] {background:#e6ecdf;border:1px solid #b8c9ae;padding:1rem}
-[data-testid="stMetric"] [data-testid="stMetricLabel"] p,[data-testid="stMetric"] [data-testid="stMetricValue"] {color:#15251a!important}
+[data-testid="stMetric"] {
+    background: #e6ecdf !important;
+    border: 1px solid #b8c9ae;
+    padding: 1rem;
+}
+
+[data-testid="stMetric"],
+[data-testid="stMetric"] * {
+    color: #15251a !important;
+    -webkit-text-fill-color: #15251a !important;
+}
 [data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,[data-testid="stTextArea"] textarea {background:#1b281e;color:#f2f5f1}
 [data-baseweb="select"]>div {background:#1b281e;color:#f2f5f1}
 [data-testid="stButton"] button,[data-testid="stFormSubmitButton"] button,[data-testid="stDownloadButton"] button {background:#76a078;color:#0b140d;border:1px solid #91b38a;font-weight:650}
