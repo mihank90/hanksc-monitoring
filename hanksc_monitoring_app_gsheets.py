@@ -1,8 +1,8 @@
-"""HANK SC Athlete Monitoring. Single-file, backwards-compatible update.
+"""HANK SC Athlete Monitoring + optional calendar/archive module.
 
 Run: streamlit run hanksc_monitoring_app_gsheets.py
-Keep existing dependencies, Streamlit secrets and the Google spreadsheet unchanged.
-Both legacy worksheets remain in use. No deletion, overwrite or schema migration.
+Keep existing Streamlit secrets and both legacy worksheets unchanged.
+Install hanksc_portal.py alongside this entrypoint. New features use a separate worksheet.
 """
 from __future__ import annotations
 
@@ -431,6 +431,8 @@ def show_dashboard(athlete_restricted: str | None = None) -> None:
 
 
 def show_login() -> None:
+    from hanksc_portal import google_login_button
+    google_login_button()
     hero("Your day. Your context.", "One sign-in for your daily check-in and your own training trends. Honest feedback helps us make better decisions.")
     st.markdown('<div class="hank-principle">Training only makes sense when you can recover from it.</div>', unsafe_allow_html=True)
     mode = st.radio("Access", ["Athlete", "Coach"], horizontal=True)
@@ -466,6 +468,9 @@ def main() -> None:
     st.sidebar.caption("ATHLETE MONITORING\n\nData. Decisions. Performance.")
     st.sidebar.link_button("Visit HANK SC", "https://hanksc.com", use_container_width=True)
     st.sidebar.link_button("Privacy", "https://hanksc.com/privacy-policy", use_container_width=True)
+    from hanksc_portal import restore_google_identity, show_portal, account_switcher
+    restore_google_identity()
+    account_switcher()
     role = st.session_state.get("hank_role")
     if role not in ("athlete", "coach"):
         show_login()
@@ -473,16 +478,25 @@ def main() -> None:
     st.sidebar.caption(f"Signed in: {authenticated_athlete() if role == 'athlete' else 'Coach'}")
     if st.sidebar.button("Sign out", use_container_width=True, disabled=bool(st.session_state.get("hank_pending"))):
         st.session_state.clear()
+        if hasattr(st, "user") and st.user.is_logged_in:
+            st.logout()
         st.rerun()
     if role == "coach":
-        show_dashboard()
+        page = st.sidebar.radio("Coach space", ["Dashboard", "📅 Kalendár", "📁 Protokoly"])
+        if page == "Dashboard":
+            show_dashboard()
+        else:
+            show_portal(page, get_gsheet_client)
     else:
-        page = st.sidebar.radio("Your space", ["Daily Readiness", "My Dashboard"])
+        page = st.sidebar.radio("Your space", ["Daily Readiness", "My Dashboard", "📅 Kalendár", "📁 Protokoly"])
         if page == "Daily Readiness":
             show_readiness_form()
-        else:
+        elif page == "My Dashboard":
             if not pending_save_notice():
                 show_dashboard(athlete_restricted=require_athlete())
+        else:
+            if not pending_save_notice():
+                show_portal(page, get_gsheet_client)
 
 
 if __name__ == "__main__":
